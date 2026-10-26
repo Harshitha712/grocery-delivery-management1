@@ -1,0 +1,38 @@
+[
+  {
+    "id": "AGT-01",
+    "name": "Alex Carter",
+    "phone": "+1 (555) 234-5678",
+    "vehicle": "Electric Scooter (Green Swift)",
+    "status": "Available",
+    "rating": 4.9,
+    "totalDeliveries": 142
+  },
+  {
+    "id": "AGT-02",
+    "name": "Priya Sharma",
+    "phone": "+1 (555) 345-6789",
+    "vehicle": "Delivery Bike (EcoRide)",
+    "status": "On Delivery",
+    "rating": 4.8,
+    "totalDeliveries": 198
+  },
+  {
+    "id": "AGT-03",
+    "name": "Marcus Vance",
+    "phone": "+1 (555) 456-7890",
+    "vehicle": "Cargo Van (Fleet-04)",
+    "status": "Available",
+    "rating": 4.7,
+    "totalDeliveries": 85
+  },
+  {
+    "id": "AGT-04",
+    "name": "Elena Rostova",
+    "phone": "+1 (555) 567-8901",
+    "vehicle": "Electric Moped (Pulse)",
+    "status": "Available",
+    "rating": 5.0,
+    "totalDeliveries": 210
+  }
+]

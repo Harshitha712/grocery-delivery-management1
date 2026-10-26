@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ORD-7001",
+    "customer": {
+      "name": "Sarah Jenkins",
+      "phone": "+1 (555) 889-1029",
+      "address": "742 Evergreen Terrace, Apt 4B, Springfield"
+    },
+    "items": [
+      {
+        "id": "GROC-101",
+        "name": "Fresh Organic Bananas",
+        "price": 1.49,
+        "quantity": 2
+      },
+      {
+        "id": "GROC-105",
+        "name": "Organic Whole Farm Milk",
+        "price": 3.49,
+        "quantity": 1
+      },
+      {
+        "id": "GROC-107",
+        "name": "Artisan Sourdough Bread",
+        "price": 4.5,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 10.97,
+    "deliveryFee": 1.99,
+    "total": 12.96,
+    "paymentMethod": "UPI / Online Payment",
+    "deliverySlot": "Evening (06:00 PM - 08:00 PM)",
+    "status": "Out for Delivery",
+    "assignedAgent": {
+      "id": "AGT-02",
+      "name": "Priya Sharma",
+      "phone": "+1 (555) 345-6789"
+    },
+    "notes": "Please ring bell and leave on the porch if no answer.",
+    "createdAt": "2026-10-26T18:30:00.000Z",
+    "updatedAt": "2026-10-26T19:15:00.000Z",
+    "timeline": [
+      {
+        "status": "Pending",
+        "time": "2026-10-26T18:30:00.000Z",
+        "detail": "Order received and queued"
+      },
+      {
+        "status": "Confirmed",
+        "time": "2026-10-26T18:35:00.000Z",
+        "detail": "Payment confirmed and order acknowledged"
+      },
+      {
+        "status": "Packed",
+        "time": "2026-10-26T18:50:00.000Z",
+        "detail": "Items inspected and packed in eco-bag #42"
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "2026-10-26T19:15:00.000Z",
+        "detail": "Assigned to Priya Sharma. Driver en route."
+      }
+    ]
+  },
+  {
+    "id": "ORD-7002",
+    "customer": {
+      "name": "David Miller",
+      "phone": "+1 (555) 432-8765",
+      "address": "128 Oak Ridge Avenue, Suite 12, West End"
+    },
+    "items": [
+      {
+        "id": "GROC-106",
+        "name": "Pasture-Raised Brown Eggs",
+        "price": 4.89,
+        "quantity": 1
+      },
+      {
+        "id": "GROC-110",
+        "name": "Extra Virgin Olive Oil",
+        "price": 11.99,
+        "quantity": 1
+      },
+      {
+        "id": "GROC-111",
+        "name": "Royal Aged Basmati Rice",
+        "price": 8.99,
+        "quantity": 1
+      }
+    ],
+    "subtotal": 25.87,
+    "deliveryFee": 0.0,
+    "total": 25.87,
+    "paymentMethod": "Cash on Delivery",
+    "deliverySlot": "Express (Within 45 mins)",
+    "status": "Packed",
+    "assignedAgent": null,
+    "notes": "Fragile items, handle with care.",
+    "createdAt": "2026-10-26T19:40:00.000Z",
+    "updatedAt": "2026-10-26T19:55:00.000Z",
+    "timeline": [
+      {
+        "status": "Pending",
+        "time": "2026-10-26T19:40:00.000Z",
+        "detail": "Order received"
+      },
+      {
+        "status": "Confirmed",
+        "time": "2026-10-26T19:42:00.000Z",
+        "detail": "Order confirmed for cash payment"
+      },
+      {
+        "status": "Packed",
+        "time": "2026-10-26T19:55:00.000Z",
+        "detail": "Items assembled and ready for driver pickup"
+      }
+    ]
+  },
+  {
+    "id": "ORD-7003",
+    "customer": {
+      "name": "Amina Al-Mansoor",
+      "phone": "+1 (555) 765-2198",
+      "address": "55 Maple Boulevard, Downtown"
+    },
+    "items": [
+      {
+        "id": "GROC-102",
+        "name": "Crisp Honeycrisp Apples",
+        "price": 3.99,
+        "quantity": 2
+      },
+      {
+        "id": "GROC-109",
+        "name": "Cold-Pressed Orange Juice",
+        "price": 4.29,
+        "quantity": 2
+      }
+    ],
+    "subtotal": 16.56,
+    "deliveryFee": 1.99,
+    "total": 18.55,
+    "paymentMethod": "Credit Card",
+    "deliverySlot": "Morning (09:00 AM - 11:00 AM)",
+    "status": "Delivered",
+    "assignedAgent": {
+      "id": "AGT-01",
+      "name": "Alex Carter",
+      "phone": "+1 (555) 234-5678"
+    },
+    "notes": "Gate code is #1089",
+    "createdAt": "2026-10-26T14:10:00.000Z",
+    "updatedAt": "2026-10-26T15:20:00.000Z",
+    "timeline": [
+      {
+        "status": "Pending",
+        "time": "2026-10-26T14:10:00.000Z",
+        "detail": "Order placed"
+      },
+      {
+        "status": "Confirmed",
+        "time": "2026-10-26T14:12:00.000Z",
+        "detail": "Order confirmed"
+      },
+      {
+        "status": "Packed",
+        "time": "2026-10-26T14:30:00.000Z",
+        "detail": "Order packed"
+      },
+      {
+        "status": "Out for Delivery",
+        "time": "2026-10-26T14:45:00.000Z",
+        "detail": "Picked up by Alex Carter"
+      },
+      {
+        "status": "Delivered",
+        "time": "2026-10-26T15:20:00.000Z",
+        "detail": "Handed over to customer"
+      }
+    ]
+  }
+]

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshDrop - Grocery Delivery & Logistics Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">🥬</div>
+        <div class="brand-text">
+          <h1>Fresh<span>Drop</span></h1>
+          <p class="tagline">Grocery Delivery & Logistics Hub</p>
+        </div>
+      </div>
+
+      <!-- Quick KPI Strip in Header -->
+      <div class="header-stats" id="header-stats">
+        <div class="stat-pill">
+          <span class="stat-dot green"></span>
+          <span class="stat-label">Active Orders:</span>
+          <span class="stat-val" id="stat-active-orders">0</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-dot blue"></span>
+          <span class="stat-label">Fleet On-Road:</span>
+          <span class="stat-val" id="stat-active-fleet">0</span>
+        </div>
+        <div class="stat-pill alert" id="stat-low-stock-pill" style="display: none;">
+          <span class="stat-dot red"></span>
+          <span class="stat-label">Low Stock:</span>
+          <span class="stat-val" id="stat-low-stock">0</span>
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="tab-store">
+          <span class="tab-icon">🛒</span> Storefront
+        </button>
+        <button class="nav-tab" data-tab="tab-orders">
+          <span class="tab-icon">📦</span> Orders & Dispatch
+          <span class="badge" id="orders-badge">0</span>
+        </button>
+        <button class="nav-tab" data-tab="tab-fleet">
+          <span class="tab-icon">🛵</span> Delivery Fleet
+        </button>
+        <button class="nav-tab" data-tab="tab-inventory">
+          <span class="tab-icon">📊</span> Inventory & Admin
+        </button>
+      </nav>
+
+      <!-- Cart Button -->
+      <button class="cart-trigger" id="cart-toggle-btn" aria-label="Open Shopping Cart">
+        <span class="cart-icon">🛍️</span>
+        <span class="cart-text">Cart</span>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main App Content -->
+  <main class="main-content">
+
+    <!-- ========================================================
+         TAB 1: STOREFRONT & GROCERY CATALOG
+    ======================================================== -->
+    <section id="tab-store" class="tab-view active">
+      <!-- Promo Banner -->
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-chip">⚡ Guaranteed 30-Minute Express Delivery</span>
+          <h2>Farm-Fresh Groceries, Right to Your Doorstep</h2>
+          <p>Hand-picked organic produce, daily farm dairy, pantry essentials, and beverages dispatched instantly.</p>
+        </div>
+        <div class="hero-perks">
+          <div class="perk"><span class="perk-icon">🌱</span> 100% Quality Checked</div>
+          <div class="perk"><span class="perk-icon">🚚</span> Free Delivery Over $25</div>
+          <div class="perk"><span class="perk-icon">📱</span> Real-Time Courier Tracking</div>
+        </div>
+      </div>
+
+      <!-- Filters & Search Toolbar -->
+      <div class="toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="store-search-input" placeholder="Search vegetables, milk, fruits, bread, oil...">
+        </div>
+
+        <div class="category-filters" id="category-pills">
+          <button class="pill active" data-category="All">All Items</button>
+          <button class="pill" data-category="Fruits">🍎 Fruits</button>
+          <button class="pill" data-category="Vegetables">🥦 Vegetables</button>
+          <button class="pill" data-category="Dairy & Eggs">🥛 Dairy & Eggs</button>
+          <button class="pill" data-category="Bakery">🍞 Bakery</button>
+          <button class="pill" data-category="Beverages">🧃 Beverages</button>
+          <button class="pill" data-category="Pantry">🍚 Pantry</button>
+        </div>
+
+        <div class="sort-select">
+          <label for="store-sort">Sort:</label>
+          <select id="store-sort">
+            <option value="default">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grocery Grid -->
+      <div class="grocery-grid" id="grocery-grid">
+        <!-- Rendered dynamically by app.js -->
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading fresh groceries...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         TAB 2: ORDERS MANAGEMENT & LIVE TRACKING
+    ======================================================== -->
+    <section id="tab-orders" class="tab-view">
+      <div class="section-header">
+        <div>
+          <h2>Order Fulfillment & Dispatch Hub</h2>
+          <p>Monitor live orders, assign delivery drivers, and track delivery status step-by-step.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btn-refresh-orders">
+            <span>🔄</span> Refresh Orders
+          </button>
+        </div>
+      </div>
+
+      <!-- Order Filters -->
+      <div class="toolbar orders-toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="orders-search-input" placeholder="Search order ID (ORD-...), customer name or phone...">
+        </div>
+
+        <div class="status-filters" id="orders-status-filters">
+          <button class="pill active" data-status="All">All Orders</button>
+          <button class="pill" data-status="Pending">⏳ Pending</button>
+          <button class="pill" data-status="Packed">📦 Packed</button>
+          <button class="pill" data-status="Out for Delivery">🛵 Out for Delivery</button>
+          <button class="pill" data-status="Delivered">✅ Delivered</button>
+          <button class="pill" data-status="Cancelled">❌ Cancelled</button>
+        </div>
+      </div>
+
+      <!-- Orders List Container -->
+      <div class="orders-list" id="orders-list">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- ========================================================
+         TAB 3: DELIVERY FLEET MANAGEMENT
+    ======================================================== -->
+    <section id="tab-fleet" class="tab-view">
+      <div class="section-header">
+        <div>
+          <h2>Delivery Fleet & Couriers</h2>
+          <p>Manage drivers, track active routes, and onboard new logistics personnel.</p>
+        </div>
+        <button class="btn btn-primary" id="btn-open-driver-modal">
+          <span>➕</span> Add Delivery Driver
+        </button>
+      </div>
+
+      <!-- Fleet KPI Cards -->
+      <div class="stats-row" id="fleet-kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-icon blue">🛵</div>
+          <div class="kpi-body">
+            <span class="kpi-title">Total Couriers</span>
+            <span class="kpi-number" id="fleet-total-drivers">0</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green">🛣️</div>
+          <div class="kpi-body">
+            <span class="kpi-title">On Active Delivery</span>
+            <span class="kpi-number" id="fleet-on-delivery">0</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon purple">⚡</div>
+          <div class="kpi-body">
+            <span class="kpi-title">Available for Dispatch</span>
+            <span class="kpi-number" id="fleet-available">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Driver Grid -->
+      <div class="driver-grid" id="driver-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- ========================================================
+         TAB 4: INVENTORY & ADMIN DASHBOARD
+    ======================================================== -->
+    <section id="tab-inventory" class="tab-view">
+      <div class="section-header">
+        <div>
+          <h2>Store Inventory & Analytics</h2>
+          <p>Track store sales, restock low products, and configure your product catalog.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btn-reset-demo">
+            <span>↺</span> Reset Seed Catalog
+          </button>
+          <button class="btn btn-primary" id="btn-open-product-modal">
+            <span>➕</span> Add New Product
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin KPIs -->
+      <div class="stats-row" id="admin-kpi-row">
+        <div class="kpi-card highlight">
+          <div class="kpi-icon gold">💰</div>
+          <div class="kpi-body">
+            <span class="kpi-title">Gross Revenue</span>
+            <span class="kpi-number" id="kpi-revenue">$0.00</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon green">📦</div>
+          <div class="kpi-body">
+            <span class="kpi-title">Total Orders</span>
+            <span class="kpi-number" id="kpi-orders">0</span>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon blue">🏷️</div>
+          <div class="kpi-body">
+            <span class="kpi-title">Catalog SKUs</span>
+            <span class="kpi-number" id="kpi-skus">0</span>
+          </div>
+        </div>
+        <div class="kpi-card alert">
+          <div class="kpi-icon red">⚠️</div>
+          <div class="kpi-body">
+            <span class="kpi-title">Low Stock Items</span>
+            <span class="kpi-number" id="kpi-low-stock">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inventory Table -->
+      <div class="card table-card">
+        <div class="card-header">
+          <h3>Catalog Inventory Management</h3>
+          <span class="subtitle">Quickly adjust stock or edit product details</span>
+        </div>
+        <div class="table-responsive">
+          <table class="inventory-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Unit Price</th>
+                <th>Packaging</th>
+                <th>Stock Level</th>
+                <th>Status</th>
+                <th>Quick Restock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       SHOPPING CART & CHECKOUT DRAWER
+  ======================================================== -->
+  <div class="drawer-overlay" id="cart-drawer-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <span class="title-icon">🛍️</span>
+        <h3>Your Grocery Basket</h3>
+      </div>
+      <button class="drawer-close" id="cart-close-btn" aria-label="Close Cart">✕</button>
+    </div>
+
+    <!-- Empty Cart State -->
+    <div class="cart-empty" id="cart-empty-view">
+      <div class="empty-icon">🛒</div>
+      <h4>Your basket is empty</h4>
+      <p>Browse our catalog and add farm-fresh products to begin your order.</p>
+      <button class="btn btn-primary" id="btn-start-shopping">Start Shopping</button>
+    </div>
+
+    <!-- Active Cart Content -->
+    <div class="cart-filled" id="cart-filled-view" style="display: none;">
+      <div class="cart-items-container" id="cart-items-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="cart-checkout-section">
+        <!-- Order Cost Breakdown -->
+        <div class="cost-summary">
+          <div class="cost-line">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal">$0.00</span>
+          </div>
+          <div class="cost-line">
+            <span>Delivery Fee:</span>
+            <span id="cart-delivery-fee">$1.99</span>
+          </div>
+          <div class="free-shipping-note" id="free-shipping-note">
+            Add <strong id="free-shipping-diff">$0.00</strong> more for <strong>FREE Delivery</strong>!
+          </div>
+          <div class="cost-line total">
+            <span>Grand Total:</span>
+            <span id="cart-total">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Checkout Form Toggle / Details -->
+        <form id="checkout-form" class="checkout-form">
+          <div class="form-title">
+            <span>📍</span> Customer & Delivery Details
+          </div>
+
+          <div class="form-group">
+            <label for="cust-name">Full Name *</label>
+            <input type="text" id="cust-name" required placeholder="e.g. John Doe">
+          </div>
+
+          <div class="form-group">
+            <label for="cust-phone">Phone Number *</label>
+            <input type="tel" id="cust-phone" required placeholder="e.g. +1 (555) 019-2834">
+          </div>
+
+          <div class="form-group">
+            <label for="cust-address">Delivery Address *</label>
+            <textarea id="cust-address" required rows="2" placeholder="House/Flat No., Street, Landmark, City"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="cust-slot">Delivery Slot</label>
+              <select id="cust-slot">
+                <option value="Express (Within 30 Mins)">⚡ Express (30 Mins)</option>
+                <option value="Morning (09:00 AM - 11:00 AM)">Morning (9 AM - 11 AM)</option>
+                <option value="Afternoon (02:00 PM - 04:00 PM)">Afternoon (2 PM - 4 PM)</option>
+                <option value="Evening (06:00 PM - 08:00 PM)">Evening (6 PM - 8 PM)</option>
+              </select>
+            </div>
+            <div class="form-group half">
+              <label for="cust-payment">Payment Mode</label>
+              <select id="cust-payment">
+                <option value="Cash on Delivery">💵 Cash on Delivery</option>
+                <option value="UPI / Online">📲 UPI / Online</option>
+                <option value="Credit / Debit Card">💳 Card on Delivery</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cust-notes">Delivery Instructions (Optional)</label>
+            <input type="text" id="cust-notes" placeholder="e.g. Leave with security, do not ring bell">
+          </div>
+
+          <button type="submit" class="btn btn-success btn-block" id="btn-place-order">
+            <span>Confirm & Place Order</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================
+       MODAL: ORDER SUCCESS RECEIPT & TRACKING
+  ======================================================== -->
+  <div class="modal-overlay" id="order-success-modal">
+    <div class="modal-box text-center">
+      <div class="modal-success-badge">🎉</div>
+      <h3>Order Placed Successfully!</h3>
+      <p class="subtitle">Your groceries are being packed and will be delivered shortly.</p>
+      
+      <div class="receipt-card">
+        <div class="receipt-row">
+          <span>Order ID:</span>
+          <strong id="success-order-id">ORD-0000</strong>
+        </div>
+        <div class="receipt-row">
+          <span>Total Amount:</span>
+          <strong id="success-order-total">$0.00</strong>
+        </div>
+        <div class="receipt-row">
+          <span>Delivery Address:</span>
+          <span id="success-order-address" class="address-snippet">-</span>
+        </div>
+        <div class="receipt-row">
+          <span>Delivery Slot:</span>
+          <span id="success-order-slot">-</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-view-order-status">Track Order in Dashboard</button>
+        <button class="btn btn-secondary" id="btn-close-success-modal">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: ADD NEW GROCERY PRODUCT
+  ======================================================== -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Add New Grocery Product</h3>
+        <button class="modal-close" id="product-modal-close">✕</button>
+      </div>
+      <form id="add-product-form">
+        <div class="form-group">
+          <label for="prod-name">Product Name *</label>
+          <input type="text" id="prod-name" required placeholder="e.g. Farm Fresh Strawberries">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="prod-category">Category *</label>
+            <select id="prod-category" required>
+              <option value="Fruits">🍎 Fruits</option>
+              <option value="Vegetables">🥦 Vegetables</option>
+              <option value="Dairy & Eggs">🥛 Dairy & Eggs</option>
+              <option value="Bakery">🍞 Bakery</option>
+              <option value="Beverages">🧃 Beverages</option>
+              <option value="Pantry">🍚 Pantry</option>
+            </select>
+          </div>
+          <div class="form-group half">
+            <label for="prod-price">Price ($) *</label>
+            <input type="number" step="0.01" min="0.1" id="prod-price" required placeholder="3.99">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label for="prod-unit">Unit / Packaging *</label>
+            <input type="text" id="prod-unit" required placeholder="e.g. 500g box, 1L bottle">
+          </div>
+          <div class="form-group half">
+            <label for="prod-stock">Initial Stock Level *</label>
+            <input type="number" min="0" id="prod-stock" required value="20">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-image">Emoji Icon or Image URL</label>
+          <input type="text" id="prod-image" placeholder="🍓 (or paste an image link)">
+        </div>
+
+        <div class="form-group">
+          <label for="prod-desc">Description</label>
+          <textarea id="prod-desc" rows="2" placeholder="Brief freshness or quality description..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Save to Catalog</button>
+          <button type="button" class="btn btn-secondary" id="product-modal-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: ADD NEW DELIVERY DRIVER
+  ======================================================== -->
+  <div class="modal-overlay" id="driver-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Onboard Delivery Driver</h3>
+        <button class="modal-close" id="driver-modal-close">✕</button>
+      </div>
+      <form id="add-driver-form">
+        <div class="form-group">
+          <label for="driver-name">Driver Full Name *</label>
+          <input type="text" id="driver-name" required placeholder="e.g. Jordan Lee">
+        </div>
+
+        <div class="form-group">
+          <label for="driver-phone">Mobile Contact Number *</label>
+          <input type="tel" id="driver-phone" required placeholder="e.g. +1 (555) 778-9900">
+        </div>
+
+        <div class="form-group">
+          <label for="driver-vehicle">Assigned Vehicle / Transport *</label>
+          <select id="driver-vehicle" required>
+            <option value="Electric Scooter (FastPulse)">🛵 Electric Scooter</option>
+            <option value="Delivery Bike (EcoRide)">🚲 Cargo Bicycle</option>
+            <option value="Delivery Van (CityExpress)">🚐 Cargo Van</option>
+            <option value="Motorcycle (SpeedX)">🏍️ Delivery Motorbike</option>
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Register Driver</button>
+          <button type="button" class="btn btn-secondary" id="driver-modal-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       TOAST NOTIFICATION CONTAINER
+  ======================================================== -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="js/app.js"></script>
+</body>
+</html>

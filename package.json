@@ -1,0 +1,24 @@
+{
+  "name": "grocery-delivery-management-app",
+  "version": "1.0.0",
+  "description": "Full-stack Grocery Delivery Management Application with inventory, storefront, order tracking, and delivery dispatch.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "grocery",
+    "delivery",
+    "management",
+    "express",
+    "nodejs",
+    "order-tracking"
+  ],
+  "author": "keerthi_5",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
